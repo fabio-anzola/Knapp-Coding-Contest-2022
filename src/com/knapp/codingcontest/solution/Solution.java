@@ -79,7 +79,7 @@ public class Solution {
   public void run() throws Exception {
     while (warehouse.getRemainingProductsAtEntry().size() != 0) {
       robot.pullFrom(entryLocation);
-      while (warehouse.getRemainingProductsAtEntry().size() > 2 && entryLocation.getCurrentProducts().get(0).getCode().equalsIgnoreCase(robot.getCurrentProducts().get(0).getCode()) && robot.getRemainingLength() >= entryLocation.getCurrentProducts().get(0).getLength()) {
+      while (warehouse.getRemainingProductsAtEntry().size() > 2 && entryLocation.getCurrentProducts().get(0).getWidth() == robot.getCurrentProducts().get(0).getWidth() && robot.getRemainingLength() >= entryLocation.getCurrentProducts().get(0).getLength()) {
         robot.pullFrom(entryLocation);
       }
 
