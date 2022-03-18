@@ -83,7 +83,15 @@ public class Solution {
       robot.pushTo(storage.getLocation(abc[0], abc[1]));
     }
     System.out.println(Arrays.deepToString( storage_anz));
-    while
+    while (warehouse.hasNextOrder()) {
+      Order o = warehouse.nextOrder();
+      for (Product product : o.getProducts()) {
+        int[] goTo = whereProduct(product.getCode());
+        robot.pullFrom(storage.getLocation(goTo[0], goTo[1]));
+        robot.pushTo(warehouse.getStorage().getExitLocation());
+        storage_anz[goTo[0]][goTo[1]] = null;
+      }
+    }
   }
 
   public int[] nextStorageFree() {
@@ -93,6 +101,21 @@ public class Solution {
         Product product = products[j];
         if (product == null) {
           return new int[]{i, j};
+        }
+      }
+    }
+    return null;
+  }
+
+  public int[] whereProduct(String code) {
+    for (int i = 0, storage_anzLength = storage_anz.length; i < storage_anzLength; i++) {
+      Product[] products = storage_anz[i];
+      for (int j = 0, productsLength = products.length; j < productsLength; j++) {
+        Product product = products[j];
+        if (product != null) {
+          if (product.getCode().equalsIgnoreCase(code)) {
+            return new int[]{i, j};
+          }
         }
       }
     }
