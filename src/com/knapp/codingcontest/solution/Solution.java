@@ -79,9 +79,15 @@ public class Solution {
   public void run() throws Exception {
     while (warehouse.getRemainingProductsAtEntry().size() != 0) {
       robot.pullFrom(entryLocation);
-      int[] abc = nextStorageFree(robot.getCurrentProducts().get(0));
-      storage_anz[abc[0]][abc[1]] = robot.getCurrentProducts().get(0);
-      robot.pushTo(storage.getLocation(abc[0], abc[1]));
+      while (warehouse.getRemainingProductsAtEntry().size() > 2 && entryLocation.getCurrentProducts().get(0).getCode().equalsIgnoreCase(robot.getCurrentProducts().get(0).getCode()) && robot.getRemainingLength() >= entryLocation.getCurrentProducts().get(0).getLength()) {
+        robot.pullFrom(entryLocation);
+      }
+
+      while (robot.getCurrentProducts().size() != 0) {
+        int[] abc = nextStorageFree(robot.getCurrentProducts().get(0));
+        storage_anz[abc[0]][abc[1]] = robot.getCurrentProducts().get(0);
+        robot.pushTo(storage.getLocation(abc[0], abc[1]));
+      }
     }
     //System.out.println(Arrays.deepToString( storage_anz));
     while (warehouse.hasNextOrder()) {
