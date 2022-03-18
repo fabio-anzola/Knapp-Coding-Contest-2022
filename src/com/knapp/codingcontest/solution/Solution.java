@@ -26,6 +26,7 @@ import com.knapp.codingcontest.warehouse.Robot;
 import com.knapp.codingcontest.warehouse.Storage;
 import com.knapp.codingcontest.warehouse.Warehouse;
 import com.knapp.codingcontest.warehouse.WarehouseInfo;
+import com.knapp.codingcontest.warehouse.ex.NoSuchLocationException;
 
 /**
  * This is the code YOU have to provide
@@ -78,7 +79,7 @@ public class Solution {
   public void run() throws Exception {
     while (warehouse.getRemainingProductsAtEntry().size() != 0) {
       robot.pullFrom(entryLocation);
-      int[] abc = nextStorageFree();
+      int[] abc = nextStorageFree(robot.getCurrentProducts().get(0));
       storage_anz[abc[0]][abc[1]] = robot.getCurrentProducts().get(0);
       robot.pushTo(storage.getLocation(abc[0], abc[1]));
     }
@@ -89,26 +90,44 @@ public class Solution {
         int[] goTo = whereProduct(product.getCode());
         robot.pullFrom(storage.getLocation(goTo[0], goTo[1]));
         robot.pushTo(warehouse.getStorage().getExitLocation());
-        storage_anz[goTo[0]][goTo[1]] = null;
+        if (storage.getLocation(goTo[0], goTo[1]).getCurrentProducts().size() == 0) {
+          storage_anz[goTo[0]][goTo[1]] = null;
+        }
       }
     }
   }
 
-  public int[] nextStorageFree() {
-    int c = 0;
-    for (int i = 0; i < y; i++) {
-      for (int j = 0; j < x; j++) {
-        Product product = storage_anz[j][i];
-        if (product == null) {
-          System.out.println("next loc: " + j + "   " + i);
-          return new int[]{j, i};
+  public int[] nextStorageFree(Product p) {
+    if (whereProduct(p.getCode()) != null) {
+      try {
+        if (storage.getLocation(whereProduct(p.getCode())[0], whereProduct(p.getCode())[1]).getRemainingLength() > p.getLength()) {
+          return whereProduct(p.getCode());
+        } else {
+          for (int i = 0; i < y; i++) {
+            for (int j = 0; j < x; j++) {
+              Product product = storage_anz[j][i];
+              if (product == null) {
+                System.out.println("next loc: " + j + "   " + i);
+                return new int[]{j, i};
+              }
+            }
+          }
+        }
+      } catch (NoSuchLocationException e) {
+        e.printStackTrace();
+      }
+    } else {
+      for (int i = 0; i < y; i++) {
+        for (int j = 0; j < x; j++) {
+          Product product = storage_anz[j][i];
+          if (product == null) {
+            System.out.println("next loc: " + j + "   " + i);
+            return new int[]{j, i};
+          }
         }
       }
     }
     return null;
-
-
-
   }
 
   public int[] whereProduct(String code) {
