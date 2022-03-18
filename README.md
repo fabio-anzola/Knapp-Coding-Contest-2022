@@ -2,7 +2,7 @@
 
 This solution will get you a cost of ____
 
-##Details
+## Details
 ```
 
 ```
@@ -12,3 +12,4 @@ The Team consisted of:
 - https://github.com/ProRedMax
 - https://github.com/RobertUNF
 - https://github.com/alex-hiermann
+- https://github.com/Konsulan
