@@ -58,6 +58,11 @@ public class Solution {
     entryLocation = storage.getEntryLocation();
     exitLocation = storage.getExitLocation();
     robot = storage.getRobot();
+    int x = 10;
+    int y = 7;
+    Product[][] storage = new Product[x][y];
+
+    // Check for place where product is stored then sort by shortest path!!!
 
     // TODO: prepare data structures
   }
@@ -69,6 +74,20 @@ public class Solution {
    */
   public void run() throws Exception {
     // TODO: make calls to API (see below)
+  }
+
+  public int pathCost(int[] in, int[] product, int[] out) {
+    if (in == null) {
+      in = new int[]{this.storage.getEntryLocation().getLevel(), this.storage.getEntryLocation().getPosition()};
+    }
+    if (out == null) {
+      out = new int[]{this.storage.getExitLocation().getLevel(), this.storage.getExitLocation().getPosition()};
+    }
+
+    int toMovement = (int) Math.sqrt(Math.abs(Math.pow(product[0] - in[0], 2)) + Math.abs(Math.pow(product[1] - in[1], 2)));
+    int awayMovement = (int) Math.sqrt(Math.abs(Math.pow(out[0] - product[0], 2)) + Math.abs(Math.pow(out[1] - product[1], 2)));
+
+    return toMovement + awayMovement;
   }
 
   // ----------------------------------------------------------------------------
