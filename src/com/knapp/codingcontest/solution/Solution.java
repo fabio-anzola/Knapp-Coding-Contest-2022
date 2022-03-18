@@ -51,7 +51,9 @@ public class Solution {
 
   // ----------------------------------------------------------------------------
 
-  public Product[][] storage_anz;
+  Product[][] storage_anz;
+  int x = 15;
+  int y = 1000;
 
   public Solution(final Warehouse warehouse, final InputData input) {
     this.input = input;
@@ -61,8 +63,6 @@ public class Solution {
     entryLocation = storage.getEntryLocation();
     exitLocation = storage.getExitLocation();
     robot = storage.getRobot();
-    int x = 14;
-    int y = 999;
     storage_anz = new Product[x][y];
 
     // Check for place where product is stored then sort by shortest path!!!
@@ -82,7 +82,7 @@ public class Solution {
       storage_anz[abc[0]][abc[1]] = robot.getCurrentProducts().get(0);
       robot.pushTo(storage.getLocation(abc[0], abc[1]));
     }
-    System.out.println(Arrays.deepToString( storage_anz));
+    //System.out.println(Arrays.deepToString( storage_anz));
     while (warehouse.hasNextOrder()) {
       Order o = warehouse.nextOrder();
       for (Product product : o.getProducts()) {
@@ -95,16 +95,20 @@ public class Solution {
   }
 
   public int[] nextStorageFree() {
-    for (int i = 0, storage_anzLength = storage_anz.length; i < storage_anzLength; i++) {
-      Product[] products = storage_anz[i];
-      for (int j = 0, productsLength = products.length; j < productsLength; j++) {
-        Product product = products[j];
+    int c = 0;
+    for (int i = 0; i < y; i++) {
+      for (int j = 0; j < x; j++) {
+        Product product = storage_anz[j][i];
         if (product == null) {
-          return new int[]{i, j};
+          System.out.println("next loc: " + j + "   " + i);
+          return new int[]{j, i};
         }
       }
     }
     return null;
+
+
+
   }
 
   public int[] whereProduct(String code) {

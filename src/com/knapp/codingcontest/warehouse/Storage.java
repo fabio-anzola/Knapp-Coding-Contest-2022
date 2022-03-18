@@ -31,6 +31,8 @@ public class Storage {
   protected Storage(final WarehouseCharacteristics c, final Robot robot, final List<List<Location>> locations,
       final Location entryLocation, final Location exitLocation) {
     this.c = c;
+    System.out.println(c.getNumberOfLevels());
+    System.out.println(c.getNumberOfLocationsPerLevel());
     this.robot = robot;
     this.locations = locations;
     this.entryLocation = entryLocation;
