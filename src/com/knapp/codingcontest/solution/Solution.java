@@ -14,6 +14,7 @@
 
 package com.knapp.codingcontest.solution;
 
+import java.util.Arrays;
 import java.util.List;
 
 import com.knapp.codingcontest.data.InputData;
@@ -50,6 +51,8 @@ public class Solution {
 
   // ----------------------------------------------------------------------------
 
+  public Product[][] storage_anz;
+
   public Solution(final Warehouse warehouse, final InputData input) {
     this.input = input;
     this.warehouse = warehouse;
@@ -58,9 +61,9 @@ public class Solution {
     entryLocation = storage.getEntryLocation();
     exitLocation = storage.getExitLocation();
     robot = storage.getRobot();
-    int x = 10;
-    int y = 7;
-    Product[][] storage = new Product[x][y];
+    int x = 14;
+    int y = 999;
+    storage_anz = new Product[x][y];
 
     // Check for place where product is stored then sort by shortest path!!!
 
@@ -73,15 +76,35 @@ public class Solution {
    * The main entry-point
    */
   public void run() throws Exception {
-    // TODO: make calls to API (see below)
+    while (warehouse.getRemainingProductsAtEntry().size() != 0) {
+      robot.pullFrom(entryLocation);
+      int[] abc = nextStorageFree();
+      storage_anz[abc[0]][abc[1]] = robot.getCurrentProducts().get(0);
+      robot.pushTo(storage.getLocation(abc[0], abc[1]));
+    }
+    System.out.println(Arrays.deepToString( storage_anz));
+    while
+  }
+
+  public int[] nextStorageFree() {
+    for (int i = 0, storage_anzLength = storage_anz.length; i < storage_anzLength; i++) {
+      Product[] products = storage_anz[i];
+      for (int j = 0, productsLength = products.length; j < productsLength; j++) {
+        Product product = products[j];
+        if (product == null) {
+          return new int[]{i, j};
+        }
+      }
+    }
+    return null;
   }
 
   public int pathCost(int[] in, int[] product, int[] out) {
     if (in == null) {
-      in = new int[]{this.storage.getEntryLocation().getLevel(), this.storage.getEntryLocation().getPosition()};
+      in = new int[]{this.storage.getEntryLocation().getLevel(), this.storage.getEntryLocation().getPosition()}; //x
     }
     if (out == null) {
-      out = new int[]{this.storage.getExitLocation().getLevel(), this.storage.getExitLocation().getPosition()};
+      out = new int[]{this.storage.getExitLocation().getLevel(), this.storage.getExitLocation().getPosition()}; //y
     }
 
     int toMovement = (int) Math.sqrt(Math.abs(Math.pow(product[0] - in[0], 2)) + Math.abs(Math.pow(product[1] - in[1], 2)));
