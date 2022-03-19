@@ -41,6 +41,8 @@ This solution will get you a cost of 199790,6
 ```
 
 ## Team
+My team was awarded “Best Institute“ at the KCC 2022 by us reaching the highest average score among all teams.
+
 The Team consisted of:
 - https://github.com/ProRedMax
 - https://github.com/RobertUNF
